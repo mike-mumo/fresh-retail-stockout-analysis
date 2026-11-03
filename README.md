@@ -14,7 +14,6 @@ The 18 cities differ little (18.9% to 22.6%); city 0 holds 51.6% of rows.
 Check Category 29 first: it runs out of 25.0% of daytime hours against 16.5% overall, so ask its store managers when stock runs low and how often it is replenished. Ask the retailer for delivery and replenishment records, since this data cannot separate demand surges from supply gaps.
 
 Limit: one retailer in China, 90 days, encoded IDs, no delivery records, so these are associations. All-day stock-outs hold 20.3% of out-of-stock hours and may mean the product was not offered.
-Without all-day rows the hours share is 16.5% instead of 19.9%, and the day rate 41.9% instead of 44.3%.
 
 ## Dashboard
 ![Dashboard top](images/dashboard_1.png)
@@ -44,7 +43,7 @@ Cleaning log: FreshRetailNet-50K, train split (p2_01_cleaning)
    out-of-stock hours. Without them the hours share is 16.5% (not 19.9%) and the stock-out day rate 41.9%
    (not 44.3%), so the headline rates include these rows. Their sales amount is 0 in at least three quarters
    of them (mean 0.046, maximum 15.4). Possible explanation: the stock count covers hours 6 to 21 but daily
-   sales cover 24 hours, so some sales may come from hours 0 to 5 or 22 to 23; to be checked in the analysis.
+   sales cover 24 hours, so some sales may come from hours 0 to 5 or 22 to 23; not checked in this project.
    Decision: kept and flagged (so_allday).
 10. dt converted from text to dates; derived so_day (stock_hour6_22_cnt > 0) and so_share (count / 16).
 11. ID columns downcast to small integers to save memory.
@@ -59,6 +58,8 @@ Cleaning log: FreshRetailNet-50K, train split (p2_01_cleaning)
 - Without all-day rows the hours share is 16.5% instead of 19.9%, and the day rate 41.9% instead of 44.3%.
 - Holiday and weather effects cannot be separated from the calendar.
 - Categories are ranked only with 100+ series (22 of 32).
+- Sales recorded during a stock-out understate real demand, so sales are not treated as demand and lost sales are not estimated.
+- One retailer in China, perishable goods, 90 days: this does not describe Kenya.
 ## Files
 - notebooks/: cleaning and analysis
 - data/summary/: the four small tables behind the dashboard
